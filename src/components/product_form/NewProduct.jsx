@@ -18,7 +18,7 @@ export default function NewProduct() {
           <Modal.Title>Item nuevo</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <ProductForm />
+          <ProductForm close={handleClose} />
         </Modal.Body>
       </Modal>
     </>

@@ -1,8 +1,18 @@
 import { Button, Col, Form, Row } from "react-bootstrap";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { createProduct } from "../../storage/reducers/productSlice";
 
-export default function ProductForm() {
+import { v4 as uuid } from "uuid";
+
+export default function ProductForm(props) {
+  const products = useSelector((state) => {
+    state.products;
+  });
+  const dispatch = useDispatch();
+
   const [product, setProduct] = useState({
+    id: "p" + uuid(),
     title: "",
     price: 0,
   });
@@ -16,7 +26,9 @@ export default function ProductForm() {
   };
 
   const saveItem = () => {
-    console.log(product);
+    dispatch(createProduct(product));
+    // eslint-disable-next-line react/prop-types
+    props.close();
   };
 
   return (
