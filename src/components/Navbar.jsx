@@ -1,6 +1,6 @@
-import { Button, Container, Navbar, Modal } from "react-bootstrap";
+import { Button, Navbar, Modal } from "react-bootstrap";
 import { useState, useContext } from "react";
-import { CartContext } from "../CartContext";
+import { CartContext } from "../storage/CartContext";
 import CartProduct from "./CartProduct";
 
 function NavbarComponent() {
@@ -32,7 +32,6 @@ function NavbarComponent() {
     (sum, product) => sum + product.quantity,
     0
   );
-
   return (
     <>
       <Navbar expand="sm">

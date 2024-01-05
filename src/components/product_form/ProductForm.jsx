@@ -18,7 +18,7 @@ export default function ProductForm(props) {
   });
 
   const onChangeNumber = (e) => {
-    setProduct({ ...product, [e.target.id]: e.target.value });
+    setProduct({ ...product, [e.target.id]: parseFloat(e.target.value) });
   };
 
   const onChangeTitle = (e) => {
