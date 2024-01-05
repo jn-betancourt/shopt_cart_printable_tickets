@@ -5,6 +5,7 @@ import { persistReducer, persistStore } from "redux-persist";
 
 import productSlice from "./reducers/productSlice";
 
+
 const persistConfig = {
   key: "root",
   storage,
