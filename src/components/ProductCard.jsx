@@ -1,5 +1,6 @@
+/* eslint-disable react/prop-types */
 import { Card, Button, Form, Row, Col } from "react-bootstrap";
-import { CartContext } from "../CartContext";
+import { CartContext } from "../storage/CartContext";
 import { useContext } from "react";
 
 function ProductCard(props) {
@@ -49,10 +50,7 @@ function ProductCard(props) {
             </Button>
           </>
         ) : (
-          <Button
-            variant="primary"
-            onClick={() => cart.addOneToCart(product)}
-          >
+          <Button variant="primary" onClick={() => cart.addOneToCart(product)}>
             Add To Cart
           </Button>
         )}

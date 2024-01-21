@@ -2,30 +2,19 @@ import { Button, Navbar, Modal } from "react-bootstrap";
 import { useState, useContext } from "react";
 import { CartContext } from "../storage/CartContext";
 import CartProduct from "./CartProduct";
+import { useNavigate } from "react-router-dom";
 
 function NavbarComponent() {
   const cart = useContext(CartContext);
+  const navigate = useNavigate();
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const checkout = async () => {
-    await fetch("http://localhost:4000/checkout", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ items: cart.items }),
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((response) => {
-        if (response.url) {
-          window.location.assign(response.url); // Forwarding user to Stripe
-        }
-      });
+  const checkout = () => {
+    handleClose();
+    navigate("ticket");
   };
 
   const productsCount = cart.items.reduce(
