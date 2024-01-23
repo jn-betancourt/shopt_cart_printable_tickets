@@ -1,18 +1,29 @@
-import { Button, Navbar, Modal } from "react-bootstrap";
+import { Button, Navbar, Modal, Form } from "react-bootstrap";
 import { useState, useContext } from "react";
 import { CartContext } from "../storage/CartContext";
 import CartProduct from "./CartProduct";
+import ClientForm from "./client_form/ClientForm";
 import { useNavigate } from "react-router-dom";
 
 function NavbarComponent() {
   const cart = useContext(CartContext);
   const navigate = useNavigate();
 
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const [show, setShow] = useState({
+    show: false,
+    hasClient: false,
+  });
+  const handleClose = () => setShow({ ...show, show: false });
+  const handleShow = () => setShow({ ...show, show: true });
 
-  const checkout = () => {
+  const hasClient = (e) => {
+    setShow({
+      ...show,
+      hasClient: e.target.checked,
+    });
+  };
+
+  const checkOut = () => {
     handleClose();
     navigate("ticket");
   };
@@ -30,7 +41,7 @@ function NavbarComponent() {
           <Button onClick={handleShow}>Cart ({productsCount} Items)</Button>
         </Navbar.Collapse>
       </Navbar>
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={show.show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Shopping Cart</Modal.Title>
         </Modal.Header>
@@ -47,9 +58,19 @@ function NavbarComponent() {
               ))}
 
               <h1>Total: {cart.getTotalCost().toFixed(2)}</h1>
-
-              <Button variant="success" onClick={checkout}>
-                Purchase items!
+              <Form>
+                <Form.Group>
+                  <Form.Check
+                    id="isDomicilio"
+                    type="checkbox"
+                    label="¿Es domicilio?"
+                    onChange={hasClient}
+                  />
+                </Form.Group>
+                {show.hasClient ? <ClientForm></ClientForm> : null}
+              </Form>
+              <Button variant="success" onClick={checkOut}>
+                Crear factura!
               </Button>
             </>
           ) : (
