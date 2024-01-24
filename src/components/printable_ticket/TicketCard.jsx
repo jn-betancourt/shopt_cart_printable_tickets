@@ -5,28 +5,42 @@ import { CartContext } from "../../storage/CartContext";
 import { ClientContext } from "../../storage/ClientContext";
 import { Row, Button } from "react-bootstrap";
 
+import { postTicket, postTicketToGo } from "../../api/ticket_api/ticketApi";
+
 export default function TicketCard() {
   const cart = useContext(CartContext);
   const navigate = useNavigate();
   const client = useContext(ClientContext);
   const sendData = async () => {
-    await fetch("http://localhost:8080/api/ticket", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(cart.items),
-    })
+    if (!client.client.hasClient) {
+      postTicket(cart.items)
+        .then(() => {
+          client.removeClient();
+          cart.items.map((item) => {
+            cart.deleteFromCart(item.id);
+            navigate("/");
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+          client.removeClient();
+          navigate("/");
+        });
+    } else {
+      postTicketToGo(cart.items, client.client)
       .then(() => {
+        client.removeClient();
         cart.items.map((item) => {
           cart.deleteFromCart(item.id);
-          client.removeClient();
           navigate("/");
         });
       })
       .catch((error) => {
         console.log(error);
-        client.removeClient();
-        navigate("/");
+          client.removeClient();
+          navigate("/");
       });
+    }
   };
 
   return (
